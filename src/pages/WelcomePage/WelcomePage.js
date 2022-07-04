@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
 import axios from "axios";
@@ -56,8 +57,12 @@ export default function Welcome() {
       <h3>How does your code sound?</h3>
       {isLoggedIn ? (
         <div>
-          <button>Create Music</button>
-          <button>My Music</button>
+          <button>
+            <Link to="/code">Create Music</Link>
+          </button>
+          <button>
+            <Link to="/code/mypage">My Music</Link>
+          </button>
         </div>
       ) : (
         <button onClick={handleGoogleButton}>Login with Google</button>
