@@ -6,7 +6,9 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "@uiw/react-codemirror": "^3.2.1",
     "axios": "^0.27.2",
+    "codemirror": "^5.65.3",
     "firebase": "^9.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -18,7 +20,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "con": "concurrently \"cd ../type-type-music-backend && npm run nodemon\" \"npm run start\""
   },
   "eslintConfig": {
     "extends": [
@@ -81,5 +84,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^7.2.2"
   }
 }

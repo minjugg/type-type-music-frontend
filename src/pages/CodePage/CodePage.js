@@ -1,5 +1,10 @@
 import React from "react";
+import CodeEditor from "./CodeEditor";
 
 export default function CodePage() {
-  return <div>코드 에디터 페이지</div>;
+  return (
+    <div>
+      <CodeEditor />
+    </div>
+  );
 }
