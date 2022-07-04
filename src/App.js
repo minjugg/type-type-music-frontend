@@ -1,65 +1,19 @@
-import { useEffect, useState } from "react";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "./config/firebase";
-import axios from "axios";
+import React from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import WelcomePage from "./pages/WelcomePage/WelcomePage";
+import CodePage from "./pages/CodePage/CodePage";
+import MyListPage from "./pages/MyListPage/MyListPage";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState("");
-
-  const fetchData = async (token) => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}/login`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          charset: "utf-8",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-  };
-
-  useEffect(() => {
-    if (token) {
-      fetchData(token);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    auth.onAuthStateChanged(async (userCredential) => {
-      if (userCredential) {
-        setIsLoggedIn(true);
-        const idToken = await userCredential.getIdToken();
-        setToken(idToken);
-      }
-    });
-  }, []);
-
-  const handleGoogleButton = async (e) => {
-    e.preventDefault();
-
-    try {
-      const userCredential = await signInWithPopup(auth, provider);
-
-      if (userCredential) {
-        setIsLoggedIn(true);
-      }
-    } catch (error) {
-      console.error(error.code, error.message);
-    }
-  };
-
   return (
     <div>
-      {isLoggedIn ? (
-        <div>
-          <button>Create Music</button>
-          <button>My Music</button>
-        </div>
-      ) : (
-        <button onClick={handleGoogleButton}>Login with Google</button>
-      )}
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/code" element={<CodePage />} />
+        <Route path="/code/mypage" element={<MyListPage />} />
+        <Route path="/*" element={<Navigate to="/" replace />} />
+      </Routes>
     </div>
   );
 }
