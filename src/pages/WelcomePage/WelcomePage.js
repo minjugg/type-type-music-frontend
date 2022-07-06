@@ -5,6 +5,7 @@ import { auth, provider } from "../../config/firebase";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { tokenState } from "../../states/music";
+import styled from "styled-components";
 
 export default function Welcome() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -54,21 +55,52 @@ export default function Welcome() {
   };
 
   return (
-    <div>
-      <h1>Type Type Music</h1>
-      <h3>How does your code sound?</h3>
-      {isLoggedIn ? (
-        <div>
-          <button>
-            <Link to="/code">Create Music</Link>
-          </button>
-          <button>
-            <Link to="/code/mypage">My Music</Link>
-          </button>
+    <div className="main-background">
+      <WelcomeWrapper>
+        <div className="main">
+          <div className="title">TYPE TYPE MUSIC</div>
+          <div className="subtitle">How does your code sound?</div>
         </div>
-      ) : (
-        <button onClick={handleGoogleButton}>Login with Google</button>
-      )}
+        {isLoggedIn ? (
+          <div>
+            <button>
+              <Link to="/code">CREATE MUSIC</Link>
+            </button>
+            <button>
+              <Link to="/code/mypage">MY MUSIC</Link>
+            </button>
+          </div>
+        ) : (
+          <button onClick={handleGoogleButton}>Login with Google</button>
+        )}
+      </WelcomeWrapper>
     </div>
   );
 }
+
+const WelcomeWrapper = styled.div`
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 100px;
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+
+  .subtitle {
+    font-size: 40px;
+    margin-bottom: 30px;
+  }
+
+  button {
+    display: inline-block;
+  }
+
+  button:hover {
+    background: #1a73e8;
+  }
+`;

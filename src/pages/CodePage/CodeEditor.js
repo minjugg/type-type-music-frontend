@@ -84,6 +84,7 @@ export default function App() {
           mode: "js",
         }}
         height="250px"
+        width="500px"
         onChange={(editor, viewUpdate) => {
           const value = editor.getValue();
 

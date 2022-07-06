@@ -5,6 +5,7 @@ import * as Tone from "tone";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { musicState, musicURLState, tokenState } from "../../states/music";
 import axios from "axios";
+import styled from "styled-components";
 
 export default function CodePage() {
   const codeLetter = useRecoilValue(musicState);
@@ -52,7 +53,6 @@ export default function CodePage() {
     }).chain(Tone.Destination, recorder);
 
     recorder.start();
-    const chunks = [];
 
     let noteIndex = 0;
 
@@ -101,9 +101,22 @@ export default function CodePage() {
   };
 
   return (
-    <div>
-      <CodeEditor />
-      <button onClick={handleListenButton}>Listen</button>
+    <div className="main-background">
+      <CodeWrapper>
+        <CodeEditor />
+        <button onClick={handleListenButton}>Listen</button>
+      </CodeWrapper>
     </div>
   );
 }
+
+const CodeWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  button {
+    justify-content: center;
+    text-align: center;
+    font-size: 40px;
+  }
+`;
