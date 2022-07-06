@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { tokenState } from "../../states/music";
 
 export default function Welcome() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useRecoilState(tokenState);
 
   const fetchData = async (token) => {
     const response = await axios.get(

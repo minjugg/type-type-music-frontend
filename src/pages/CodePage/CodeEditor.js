@@ -1,66 +1,19 @@
 import React from "react";
+import { useSetRecoilState } from "recoil";
+import { musicState } from "../../states/music";
 import CodeMirror from "@uiw/react-codemirror";
 import "codemirror/theme/dracula.css";
 import * as Tone from "tone";
 
 export default function App() {
-  let code = [];
-
-  const synth = new Tone.Synth().toDestination();
-
-  const note = {
-    q: "G2",
-    w: "A2",
-    e: "B2",
-    r: "C3",
-    t: "D3",
-    y: "E3",
-    u: "F3",
-    i: "G3",
-    o: "A3",
-    p: "B3",
-    a: "C4",
-    s: "D4",
-    d: "E4",
-    f: "F4",
-    g: "G4",
-    h: "A4",
-    j: "B4",
-    k: "C5",
-    l: "D5",
-    z: "E5",
-    x: "F5",
-    c: "G5",
-    v: "A5",
-    b: "B5",
-    n: "C6",
-    m: "D6",
-  };
-
-  let loopBeat;
-
-  const handleListenButton = (code) => {
-    let i = 0;
-
-    const synth = new Tone.Synth().toDestination();
-
-    function song(time) {
-      if (i === code.length) return;
-
-      if (note[code[i]]) {
-        synth.triggerAttackRelease(note[code[i]], "16n", time);
-      }
-
-      i++;
-    }
-
-    loopBeat = new Tone.Loop(song, "16n");
-    Tone.Transport.start();
-    loopBeat.start(0);
-  };
+  const setMusicCode = useSetRecoilState(musicState);
 
   function play(e) {
-    const synth = new Tone.Synth().toDestination();
+    const synth = new Tone.Synth({
+      oscillator: {
+        type: "sine",
+      },
+    }).toDestination();
 
     switch (e.key) {
       case "q":
@@ -133,10 +86,10 @@ export default function App() {
         height="250px"
         onChange={(editor, viewUpdate) => {
           const value = editor.getValue();
-          code = [...value];
+
+          setMusicCode([...value]);
         }}
       />
-      <button onClick={() => handleListenButton(code)}>Listen</button>
     </div>
   );
 }
