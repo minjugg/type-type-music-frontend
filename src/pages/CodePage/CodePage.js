@@ -11,7 +11,7 @@ export default function CodePage() {
   const codeLetter = useRecoilValue(musicState);
   const navigate = useNavigate();
   const token = useRecoilValue(tokenState);
-  const setUrl = useSetRecoilState(musicURLState);
+  const setUrlMade = useSetRecoilState(musicURLState);
 
   const note = {
     q: "G2",
@@ -42,13 +42,19 @@ export default function CodePage() {
     m: "D6",
   };
 
-  const newNote = codeLetter.map((key) => note[key]);
+  const melody = codeLetter.map((key) => note[key]);
 
-  const handleListenButton = (e) => {
+  const headers = {
+    "Content-Type": "multipart/form-data",
+    charset: "utf-8",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const handleListenButton = async () => {
     const recorder = new Tone.Recorder();
     const synth = new Tone.Synth({
       oscillator: {
-        type: "triangle",
+        type: "sine",
       },
     }).chain(Tone.Destination, recorder);
 
@@ -57,47 +63,57 @@ export default function CodePage() {
     let noteIndex = 0;
 
     const sequence = new Tone.Sequence(
-      (time, note) => {
-        if (noteIndex === newNote.length) {
-          const recordingStop = setInterval(async () => {
-            const recording = await recorder.stop();
-            const url = URL.createObjectURL(recording);
-            setUrl(url);
-
-            const result = await axios.post(
-              `${process.env.REACT_APP_SERVER_URL}/upload`,
-              { data: url },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  charset: "utf-8",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-
-            const anchor = document.createElement("a");
-            anchor.download = "recording.webm";
-            anchor.href = url;
-            anchor.click();
-            return clearInterval(recordingStop);
-          }, 500);
-
+      async function (time, note) {
+        if (noteIndex === melody.length) {
           Tone.Transport.stop();
           sequence.stop();
-          return;
+
+          let stop = true;
+
+          const endRecord = setInterval(async () => {
+            if (stop) {
+              stop = false;
+              const recording = await recorder.stop();
+              const url = URL.createObjectURL(recording);
+              const file = new File([recording], "blob", {
+                type: "audio/mpeg",
+              });
+
+              setUrlMade(url);
+
+              const formData = new FormData();
+              formData.append("audio", file);
+
+              await axios.post(
+                `${process.env.REACT_APP_SERVER_URL}/upload`,
+                formData,
+                {
+                  headers,
+                }
+              );
+            }
+
+            return clearInterval(endRecord);
+          }, 500);
+
+          return navigate("/code/play");
         }
 
         synth.triggerAttackRelease(note, 0.5, time);
         noteIndex++;
       },
-      newNote,
-      "16n"
+      melody,
+      "8n"
     );
 
     Tone.Transport.start();
     sequence.start();
-    navigate("/code/play");
+
+    return () => {
+      Tone.Transport.cancel();
+      Tone.Transport.stop();
+      Tone.Transport.dispose();
+    };
   };
 
   return (
