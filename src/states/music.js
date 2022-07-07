@@ -14,3 +14,8 @@ export const musicURLState = atom({
   key: "urlState",
   default: "",
 });
+
+export const toneState = atom({
+  key: "toneState",
+  default: false,
+});
