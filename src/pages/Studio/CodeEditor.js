@@ -1,12 +1,12 @@
 import React from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { musicState } from "../../states/music";
 import CodeMirror from "@uiw/react-codemirror";
 import "codemirror/theme/dracula.css";
 import * as Tone from "tone";
 
-export default function App() {
-  const setMusicCode = useSetRecoilState(musicState);
+export default function CodeEditor() {
+  const [code, setMusicCode] = useRecoilState(musicState);
 
   function play(e) {
     const synth = new Tone.Synth({
@@ -78,7 +78,7 @@ export default function App() {
   return (
     <div>
       <CodeMirror
-        value="console.log('hello')"
+        value={code}
         options={{
           theme: "dracula",
           mode: "js",
@@ -88,7 +88,7 @@ export default function App() {
         onChange={(editor, viewUpdate) => {
           const value = editor.getValue();
 
-          setMusicCode([...value]);
+          setMusicCode(value);
         }}
       />
     </div>

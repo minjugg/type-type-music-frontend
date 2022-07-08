@@ -3,10 +3,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import GlobalStyles from "../src/pages/styles/GlobalStyles";
 import { Reset } from "styled-reset";
 
-import WelcomePage from "./pages/WelcomePage/WelcomePage";
-import CodePage from "./pages/CodePage/CodePage";
-import PlayPage from "./pages/PlayPage/PlayPage";
-import MyListPage from "./pages/MyListPage/MyListPage";
+import Home from "./pages/Home/Home";
+import StandBy from "./pages/StandBy/StandBy";
+import Studio from "./pages/Studio/Studio";
+import Play from "./pages/Play/Play";
+import MyPage from "./pages/MyPage/MyPage";
 
 function App() {
   return (
@@ -14,10 +15,11 @@ function App() {
       <GlobalStyles />
       <Reset />
       <Routes>
-        <Route path="/" element={<WelcomePage />} />
-        <Route path="/code" element={<CodePage />} />
-        <Route path="/code/play" element={<PlayPage />} />
-        <Route path="/code/mypage" element={<MyListPage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/:username" element={<StandBy />} />
+        <Route path="/:username/code" element={<Studio />} />
+        <Route path="/:username/code/play" element={<Play />} />
+        <Route path="/:username/mypage" element={<MyPage />} />
         <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

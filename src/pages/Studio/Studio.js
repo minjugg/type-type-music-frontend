@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import CodeEditor from "./CodeEditor";
 import * as Tone from "tone";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { musicState, musicURLState, tokenState } from "../../states/music";
+import { musicState, musicURLState } from "../../states/music";
+import { tokenState, userState } from "../../states/user";
 import axios from "axios";
 import styled from "styled-components";
 
-export default function CodePage() {
+export default function Studio() {
   const codeLetter = useRecoilValue(musicState);
   const navigate = useNavigate();
   const token = useRecoilValue(tokenState);
   const setUrlMade = useSetRecoilState(musicURLState);
+  const currentUser = useRecoilValue(userState);
 
   const note = {
     q: "G2",
@@ -42,7 +44,7 @@ export default function CodePage() {
     m: "D6",
   };
 
-  const melody = codeLetter.map((key) => note[key]);
+  const melody = codeLetter.split("").map((key) => note[key]);
 
   const headers = {
     "Content-Type": "multipart/form-data",
@@ -85,7 +87,7 @@ export default function CodePage() {
               formData.append("audio", file);
 
               await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/upload`,
+                `${process.env.REACT_APP_SERVER_URL}/users/${currentUser}/upload`,
                 formData,
                 {
                   headers,
@@ -96,14 +98,14 @@ export default function CodePage() {
             return clearInterval(endRecord);
           }, 500);
 
-          return navigate("/code/play");
+          return navigate(`/${currentUser}/code/play`);
         }
 
         synth.triggerAttackRelease(note, 0.5, time);
         noteIndex++;
       },
       melody,
-      "8n"
+      " 8n"
     );
 
     Tone.Transport.start();
