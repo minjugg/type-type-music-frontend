@@ -1,48 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CodeEditor from "./CodeEditor";
 import * as Tone from "tone";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { musicState, musicURLState, tokenState } from "../../states/music";
+import { musicState, musicUrlState } from "../../states/music";
+import { tokenState, userState } from "../../states/user";
 import axios from "axios";
-import styled from "styled-components";
+import { note } from "../../constants/codeLetter";
+import drum from "../../samples/drum/080_bpm.wav";
+import A1 from "../../samples/bass/curiousbass.wav";
 
-export default function CodePage() {
-  const codeLetter = useRecoilValue(musicState);
+export default function Listen() {
   const navigate = useNavigate();
   const token = useRecoilValue(tokenState);
-  const setUrlMade = useSetRecoilState(musicURLState);
+  const currentUser = useRecoilValue(userState);
+  const codeLetter = useRecoilValue(musicState);
+  const setUrlMade = useSetRecoilState(musicUrlState);
 
-  const note = {
-    q: "G2",
-    w: "A2",
-    e: "B2",
-    r: "C3",
-    t: "D3",
-    y: "E3",
-    u: "F3",
-    i: "G3",
-    o: "A3",
-    p: "B3",
-    a: "C4",
-    s: "D4",
-    d: "E4",
-    f: "F4",
-    g: "G4",
-    h: "A4",
-    j: "B4",
-    k: "C5",
-    l: "D5",
-    z: "E5",
-    x: "F5",
-    c: "G5",
-    v: "A5",
-    b: "B5",
-    n: "C6",
-    m: "D6",
-  };
-
-  const melody = codeLetter.map((key) => note[key]);
+  const melody = codeLetter.split("").map((key) => note[key]);
 
   const headers = {
     "Content-Type": "multipart/form-data",
@@ -58,34 +32,47 @@ export default function CodePage() {
       },
     }).chain(Tone.Destination, recorder);
 
+    synth.volume.value = -10;
+
     recorder.start();
 
     let noteIndex = 0;
 
+    const drumbeat = new Tone.Player(drum).toDestination();
+    const bassbeat = new Tone.Sampler({ A1 }).toDestination();
+
+    drumbeat.volume.value = -6;
+    bassbeat.volume.value = -10;
+
+    Tone.loaded().then(() => {
+      drumbeat.start();
+    });
+
     const sequence = new Tone.Sequence(
-      async function (time, note) {
+      async (time, note) => {
         if (noteIndex === melody.length) {
           Tone.Transport.stop();
           sequence.stop();
 
           let stop = true;
 
-          const endRecord = setInterval(async () => {
+          const endRecording = setInterval(async () => {
             if (stop) {
               stop = false;
               const recording = await recorder.stop();
               const url = URL.createObjectURL(recording);
+
+              setUrlMade(url);
+
               const file = new File([recording], "blob", {
                 type: "audio/mpeg",
               });
-
-              setUrlMade(url);
 
               const formData = new FormData();
               formData.append("audio", file);
 
               await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/upload`,
+                `${process.env.REACT_APP_SERVER_URL}/users/${currentUser}/records`,
                 formData,
                 {
                   headers,
@@ -93,13 +80,16 @@ export default function CodePage() {
               );
             }
 
-            return clearInterval(endRecord);
+            return clearInterval(endRecording);
           }, 500);
 
-          return navigate("/code/play");
+          if (currentUser) {
+            return navigate(`/users/${currentUser}/code/play/tag`);
+          }
         }
 
         synth.triggerAttackRelease(note, 0.5, time);
+        bassbeat.triggerAttack("A1");
         noteIndex++;
       },
       melody,
@@ -107,6 +97,7 @@ export default function CodePage() {
     );
 
     Tone.Transport.start();
+    Tone.Transport.bpm.value = 80;
     sequence.start();
 
     return () => {
@@ -116,23 +107,9 @@ export default function CodePage() {
     };
   };
 
-  return (
-    <div className="main-background">
-      <CodeWrapper>
-        <CodeEditor />
-        <button onClick={handleListenButton}>Listen</button>
-      </CodeWrapper>
-    </div>
-  );
+  useEffect(() => {
+    handleListenButton();
+  }, []);
+
+  return <div className="main-background">Playing code ...</div>;
 }
-
-const CodeWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  button {
-    justify-content: center;
-    text-align: center;
-    font-size: 40px;
-  }
-`;

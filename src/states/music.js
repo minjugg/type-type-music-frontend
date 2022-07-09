@@ -2,15 +2,10 @@ import { atom } from "recoil";
 
 export const musicState = atom({
   key: "musicState",
-  default: [],
+  default: "sample code",
 });
 
-export const tokenState = atom({
-  key: "tokenState",
-  default: "",
-});
-
-export const musicURLState = atom({
+export const musicUrlState = atom({
   key: "urlState",
   default: "",
 });

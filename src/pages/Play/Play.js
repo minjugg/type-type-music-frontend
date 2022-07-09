@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { musicURLState } from "../../states/music";
+import { musicUrlState } from "../../states/music";
 
-export default function PlayPage() {
-  const urlmade = useRecoilValue(musicURLState);
+export default function Play() {
+  const urlmade = useRecoilValue(musicUrlState);
   const [tag, setTag] = useState("");
 
   const handleTagChange = (e) => {
@@ -16,7 +16,7 @@ export default function PlayPage() {
   };
 
   return (
-    <div>
+    <div className="main-background">
       {urlmade && <audio id="audio" controls src={urlmade}></audio>}
       <form>
         <label htmlFor="tag">Tag</label>
