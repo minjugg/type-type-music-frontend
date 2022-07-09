@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { musicURLState } from "../../states/music";
+import { musicUrlState } from "../../states/music";
 
 export default function Play() {
-  const urlmade = useRecoilValue(musicURLState);
+  const urlmade = useRecoilValue(musicUrlState);
   const [tag, setTag] = useState("");
 
   const handleTagChange = (e) => {

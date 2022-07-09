@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
@@ -8,13 +8,12 @@ import { tokenState, userState } from "../../states/user";
 import styled from "styled-components";
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useRecoilState(tokenState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
   const fetchData = async (token) => {
-    await axios.get(`${process.env.REACT_APP_SERVER_URL}/login`, {
+    await axios.get(`${process.env.REACT_APP_SERVER_URL}/auth`, {
       headers: {
         "Content-Type": "application/json",
         charset: "utf-8",
@@ -32,18 +31,18 @@ export default function Home() {
   useEffect(() => {
     auth.onAuthStateChanged(async (userCredential) => {
       if (userCredential) {
-        setIsLoggedIn(true);
         const idToken = await userCredential.getIdToken();
-
         setToken(idToken);
-        setCurrentUser(userCredential.email.split("@")[0]);
+
+        const username = userCredential.email.split("@")[0];
+        setCurrentUser(username);
       }
     });
   }, []);
 
   useEffect(() => {
     if (currentUser) {
-      navigate(`/${currentUser}`);
+      navigate(`/users/${currentUser}`);
     }
   }, [currentUser]);
 
@@ -51,11 +50,7 @@ export default function Home() {
     e.preventDefault();
 
     try {
-      const userCredential = await signInWithPopup(auth, provider);
-
-      if (userCredential) {
-        setIsLoggedIn(true);
-      }
+      await signInWithPopup(auth, provider);
     } catch (error) {
       console.error(error.code, error.message);
     }

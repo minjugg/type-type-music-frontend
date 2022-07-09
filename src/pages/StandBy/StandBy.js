@@ -9,10 +9,10 @@ export default function StandBy() {
   return (
     <div className="main-background">
       <button>
-        <Link to={`/${currentUser}/code`}>CREATE MUSIC</Link>
+        <Link to={`/users/${currentUser}/code`}>STUDIO</Link>
       </button>
       <button>
-        <Link to={`/${currentUser}/mypage`}>MY MUSIC</Link>
+        <Link to={`/users/${currentUser}/my-page`}>MY MUSIC</Link>
       </button>
     </div>
   );

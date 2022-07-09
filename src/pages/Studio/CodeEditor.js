@@ -15,6 +15,8 @@ export default function CodeEditor() {
       },
     }).toDestination();
 
+    synth.volume.value = -6;
+
     switch (e.key) {
       case "q":
         return synth.triggerAttackRelease("G2", "16n");
