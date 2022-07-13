@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { tokenState, userState } from "../../states/user";
 import styled from "styled-components";
@@ -11,16 +11,16 @@ export default function MyPage() {
   const [musics, setMusic] = useState(null);
   const [click, setClick] = useState(true);
 
-  const headers = {
-    "Content-Type": "application/json",
-    charset: "utf-8",
-    Authorization: `Bearer ${token}`,
-  };
-
   const apiEndpoint = `${process.env.REACT_APP_SERVER_URL}/users/${currentUser}`;
 
   const fetchMusicData = async () => {
-    const music = await axios.get(apiEndpoint + "/records", { headers });
+    const music = await axios.get(apiEndpoint + "/records", {
+      headers: {
+        "Content-Type": "application/json",
+        charset: "utf-8",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     setMusic(music.data);
   };
@@ -29,7 +29,13 @@ export default function MyPage() {
     await axios.patch(
       apiEndpoint + `/records/${audio._id}`,
       { isLiked: audio.isLiked },
-      { headers }
+      {
+        headers: {
+          "Content-Type": "application/json",
+          charset: "utf-8",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     setClick(!click);
@@ -46,15 +52,15 @@ export default function MyPage() {
           <Link to="/">LOGO</Link>
         </div>
         <div className="nav-bar-context">
-          <Link to="/">Play more code</Link>
-          <Link to="/">FAQ</Link>
+          <Link to={`/users/${currentUser}/code`}>Play more code</Link>
+          <Link to="/about">FAQ</Link>
         </div>
       </NavBar>
       <MusicContainer>
         <LeftContainer>Sort</LeftContainer>
         <RightContainer>
           <div className="right-main">
-            {musics &&
+            {Array.isArray(musics) ? (
               musics?.map((audio) => {
                 return (
                   <div className="audio">
@@ -65,13 +71,20 @@ export default function MyPage() {
                           type="audio/mpeg"
                         ></source>
                       </audio>
-                      <div className="likes" onClick={() => toggleLikes(audio)}>
+                      <button
+                        type="button"
+                        className="likes"
+                        onClick={() => toggleLikes(audio)}
+                      >
                         {audio.isLiked ? "♥" : "♡"}
-                      </div>
+                      </button>
                     </Audio>
                   </div>
                 );
-              })}
+              })
+            ) : (
+              <div>No music made yet.</div>
+            )}
           </div>
         </RightContainer>
       </MusicContainer>

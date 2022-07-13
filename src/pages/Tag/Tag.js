@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { musicUrlState, recordingState } from "../../states/music";
-import axios from "axios";
 import { tokenState, userState } from "../../states/user";
-import { useNavigate } from "react-router-dom";
 
 export default function Tag() {
   const urlmade = useRecoilValue(musicUrlState);
   const recording = useRecoilValue(recordingState);
   const currentUser = useRecoilValue(userState);
   const token = useRecoilValue(tokenState);
+
   const [tag, setTag] = useState("");
   const navigate = useNavigate();
 
@@ -17,7 +18,9 @@ export default function Tag() {
     setTag(e.target.value);
   };
 
-  const play = () => {
+  const repeat = (e) => {
+    e.preventDefault();
+
     const audio = document.getElementById("audio");
     audio.play();
   };
@@ -61,11 +64,11 @@ export default function Tag() {
           onChange={handleTagChange}
           placeholder="Rainy"
         />
-        <button type="button" onClick={play}>
-          Repeat
-        </button>
         <button type="submit">Save</button>
       </form>
+      <button type="button" onClick={repeat}>
+        Repeat
+      </button>
     </div>
   );
 }
