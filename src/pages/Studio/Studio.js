@@ -1,21 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 import { userState } from "../../states/user";
+import styled from "styled-components";
 
 import CodeEditor from "./CodeEditor";
 
 export default function Studio() {
   const currentUser = useRecoilValue(userState);
+  const navigate = useNavigate();
+
+  const handleListenButton = () => {
+    navigate(`/users/${currentUser}/code/play`);
+  };
 
   return (
     <div className="main-background">
       <CodeWrapper>
         <CodeEditor />
-        <button>
-          <Link to={`/users/${currentUser}/code/play`}>Listen</Link>
-        </button>
+        <button onClick={handleListenButton}>Listen</button>
       </CodeWrapper>
     </div>
   );
