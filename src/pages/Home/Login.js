@@ -2,16 +2,24 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { tokenState, userState } from "../../states/user";
-import { useFetchData } from "../../utils/hooks/useFetchData";
+import { useAxios } from "../../utils/hooks/useAxios";
 
 export default function Login() {
-  const setToken = useSetRecoilState(tokenState);
+  const [token, setToken] = useRecoilState(tokenState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
-  useFetchData(`${process.env.REACT_APP_SERVER_URL}/auth`, "application/json");
+  useAxios({
+    method: "get",
+    url: "/auth",
+    headers: {
+      "Content-Type": "application/json",
+      charset: "utf-8",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (userCredential) => {
