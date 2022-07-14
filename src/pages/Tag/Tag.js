@@ -4,13 +4,14 @@ import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { musicUrlState, recordingState } from "../../states/music";
 import { tokenState, userState } from "../../states/user";
+import Listen from "../../components/Listen/Listen";
+import styled from "styled-components";
 
 export default function Tag() {
   const urlmade = useRecoilValue(musicUrlState);
   const recording = useRecoilValue(recordingState);
   const currentUser = useRecoilValue(userState);
   const token = useRecoilValue(tokenState);
-
   const [tag, setTag] = useState("");
   const navigate = useNavigate();
 
@@ -53,6 +54,7 @@ export default function Tag() {
 
   return (
     <div className="main-background">
+      <Listen />
       <audio id="audio" controls src={urlmade}></audio>
       <form onSubmit={handleSubmit}>
         <label htmlFor="tag">Tag</label>

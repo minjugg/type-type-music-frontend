@@ -18,12 +18,13 @@ export default function Studio() {
       await Tone.start();
     }
 
-    navigate(`/users/${currentUser}/code/play`);
+    navigate(`/users/${currentUser}/code/play/tag`);
   };
 
   return (
     <div className="main-background">
       <CodeWrapper>
+        <div className="title">Type your code to listen 🎧</div>
         <CodeEditor />
         <button onClick={handlePlay}>PLAY</button>
       </CodeWrapper>
@@ -34,4 +35,9 @@ export default function Studio() {
 const CodeWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  .title {
+    font-size: 50px;
+    padding-bottom: 80px;
+  }
 `;

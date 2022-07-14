@@ -5,6 +5,7 @@ import { auth, provider } from "../../config/firebase";
 import { useRecoilState } from "recoil";
 import { tokenState, userState } from "../../states/user";
 import { useAxios } from "../../utils/hooks/useAxios";
+import styled from "styled-components";
 
 export default function Login() {
   const [token, setToken] = useRecoilState(tokenState);
@@ -41,7 +42,7 @@ export default function Login() {
     }
   }, [currentUser]);
 
-  const handleGoogleSignIn = async (e) => {
+  const handleGoogleLogin = async (e) => {
     e.preventDefault();
 
     try {
@@ -52,8 +53,23 @@ export default function Login() {
   };
 
   return (
-    <button className="login-button" onClick={handleGoogleSignIn}>
-      Sign In with Google
-    </button>
+    <SocialLoginButton>
+      <img
+        src="/images/button/google-login.png"
+        alt="google login button"
+        onClick={handleGoogleLogin}
+      />
+    </SocialLoginButton>
   );
 }
+
+const SocialLoginButton = styled.div`
+  & {
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  &:hover {
+    transform: scale(1.04);
+  }
+`;

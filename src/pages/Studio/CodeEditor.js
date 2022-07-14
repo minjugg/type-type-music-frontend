@@ -8,21 +8,19 @@ export default function CodeEditor() {
   const [code, setMusicCode] = useRecoilState(musicState);
 
   return (
-    <>
-      <CodeMirror
-        value={code}
-        options={{
-          theme: "dracula",
-          mode: "js",
-        }}
-        height="250px"
-        width="500px"
-        onChange={(editor, viewUpdate) => {
-          const value = editor.getValue();
+    <CodeMirror
+      value={code}
+      options={{
+        theme: "dracula",
+        mode: "js",
+      }}
+      height="400px"
+      width="800px"
+      onChange={(editor, viewUpdate) => {
+        const value = editor.getValue();
 
-          setMusicCode(value);
-        }}
-      />
-    </>
+        setMusicCode(value);
+      }}
+    />
   );
 }

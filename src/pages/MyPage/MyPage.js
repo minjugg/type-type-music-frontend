@@ -41,6 +41,18 @@ export default function MyPage() {
     setClick(!click);
   };
 
+  const deleteAudio = async (audio) => {
+    await axios.delete(apiEndpoint + `/records/${audio._id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        charset: "utf-8",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setClick(!click);
+  };
+
   useEffect(() => {
     fetchMusicData(token);
   }, [click]);
@@ -60,26 +72,25 @@ export default function MyPage() {
         <LeftContainer>Sort</LeftContainer>
         <RightContainer>
           <div className="right-main">
-            {Array.isArray(musics) ? (
+            {Array.isArray(musics) && musics.length > 0 ? (
               musics?.map((audio) => {
                 return (
-                  <div className="audio">
-                    <Audio>
-                      <audio controls>
-                        <source
-                          src={audio.storageUrl}
-                          type="audio/mpeg"
-                        ></source>
-                      </audio>
-                      <button
-                        type="button"
-                        className="likes"
-                        onClick={() => toggleLikes(audio)}
+                  <Audio key={audio.storageUrl}>
+                    <audio controls>
+                      <source src={audio.storageUrl} type="audio/mpeg"></source>
+                    </audio>
+                    <div className="options">
+                      <div className="likes" onClick={() => toggleLikes(audio)}>
+                        {audio.isLiked ? <>♥</> : <>♡</>}
+                      </div>
+                      <div
+                        className="delete"
+                        onClick={() => deleteAudio(audio)}
                       >
-                        {audio.isLiked ? "♥" : "♡"}
-                      </button>
-                    </Audio>
-                  </div>
+                        DEL
+                      </div>
+                    </div>
+                  </Audio>
                 );
               })
             ) : (
@@ -93,18 +104,16 @@ export default function MyPage() {
 }
 
 const NavBar = styled.nav`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 5vh;
-  padding: 0;
-  margin: 0;
+  position: relative;
+  overflow: hidden;
   background-color: black;
   color: white;
 
   a {
-    padding: 17px 30px;
-    transition: 0.3s;
+    float: left;
+    text-align: center;
+    padding: 17px 50px;
+    font-size: 30px;
     color: #fff;
   }
 
@@ -112,33 +121,57 @@ const NavBar = styled.nav`
     color: #6893cc;
   }
 
-  .logo {
-    flex: 30%;
-    padding-left: 5%;
+  .nav-bar-context {
+    float: right;
   }
 `;
 
 const MusicContainer = styled.div`
   display: flex;
+  flex-direction: row;
+  background-color: rgb(70, 75, 90);
+  color: #fff;
+  height: 100vh;
+  overflow: scroll;
 `;
 
 const LeftContainer = styled.div`
   background-color: gray;
-  height: 100vh;
+  height: 100%;
   width: 15vw;
+  text-align: center;
 `;
 
 const RightContainer = styled.div`
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-
-  .audio {
-    padding: 50px;
-    border: 1px solid black;
-  }
+  width: 100%;
+  margin: 30px;
 `;
 
 const Audio = styled.div`
   display: flex;
+  align-items: center;
+  height: 100px;
+  margin: 30px;
+
+  .options {
+    display: float;
+  }
+
+  .options:hover {
+    cursor: pointer;
+  }
+
+  .likes {
+    margin-left: 100px;
+    margin-right: 100px;
+    transform: scale(2);
+  }
+
+  .likes:hover {
+    color: gray;
+  }
+
+  .delete:hover {
+    color: gray;
+  }
 `;
