@@ -1,21 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 import { userState } from "../../states/user";
+import styled from "styled-components";
+import * as Tone from "tone";
 
 import CodeEditor from "./CodeEditor";
 
 export default function Studio() {
+  const navigate = useNavigate();
   const currentUser = useRecoilValue(userState);
+
+  const handlePlay = async (e) => {
+    e.preventDefault();
+
+    if (Tone.context.state !== "running") {
+      await Tone.start();
+    }
+
+    navigate(`/users/${currentUser}/code/play/tag`);
+  };
 
   return (
     <div className="main-background">
       <CodeWrapper>
+        <div className="title">Type your code to listen 🎧</div>
         <CodeEditor />
-        <button>
-          <Link to={`/users/${currentUser}/code/play`}>Listen</Link>
-        </button>
+        <button onClick={handlePlay}>PLAY</button>
       </CodeWrapper>
     </div>
   );
@@ -25,9 +36,8 @@ const CodeWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  button {
-    justify-content: center;
-    text-align: center;
-    font-size: 40px;
+  .title {
+    font-size: 50px;
+    padding-bottom: 80px;
   }
 `;

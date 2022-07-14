@@ -1,81 +1,27 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../config/firebase";
-import axios from "axios";
-import { useRecoilState } from "recoil";
-import { tokenState, userState } from "../../states/user";
+import React from "react";
+import Login from "./Login";
 import styled from "styled-components";
 
 export default function Home() {
-  const [token, setToken] = useRecoilState(tokenState);
-  const [currentUser, setCurrentUser] = useRecoilState(userState);
-  const navigate = useNavigate();
-
-  const fetchData = async (token) => {
-    await axios.get(`${process.env.REACT_APP_SERVER_URL}/auth`, {
-      headers: {
-        "Content-Type": "application/json",
-        charset: "utf-8",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  };
-
-  useEffect(() => {
-    if (token) {
-      fetchData(token);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    auth.onAuthStateChanged(async (userCredential) => {
-      if (userCredential) {
-        const idToken = await userCredential.getIdToken();
-        setToken(idToken);
-
-        const username = userCredential.email.split("@")[0];
-        setCurrentUser(username);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (currentUser) {
-      navigate(`/users/${currentUser}`);
-    }
-  }, [currentUser]);
-
-  const handleGoogleButton = async (e) => {
-    e.preventDefault();
-
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      console.error(error.code, error.message);
-    }
-  };
-
   return (
     <div className="main-background">
-      <Main>
+      <WelcomePage>
         <div className="main">
           <div className="title">TYPE TYPE MUSIC</div>
-          <div className="subtitle">How does your code sound?</div>
+          <div className="sub-title">How does your code sound?</div>
         </div>
-        <button className="login-button" onClick={handleGoogleButton}>
-          Login with Google
-        </button>
-      </Main>
+        <Login />
+      </WelcomePage>
     </div>
   );
 }
 
-const Main = styled.div`
+const WelcomePage = styled.div`
+  text-align: center;
+
   .main {
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
 
   .title {
@@ -84,16 +30,8 @@ const Main = styled.div`
     font-weight: bold;
   }
 
-  .subtitle {
+  .sub-title {
     font-size: 40px;
     margin-bottom: 30px;
-  }
-
-  .login-button {
-    display: inline-block;
-  }
-
-  .login-button:hover {
-    background: #1a73e8;
   }
 `;
