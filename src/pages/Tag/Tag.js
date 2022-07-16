@@ -5,7 +5,6 @@ import { useRecoilValue } from "recoil";
 import { musicUrlState, recordingState } from "../../states/music";
 import { tokenState, userState } from "../../states/user";
 import Listen from "../../components/Listen/Listen";
-import styled from "styled-components";
 
 export default function Tag() {
   const urlmade = useRecoilValue(musicUrlState);
