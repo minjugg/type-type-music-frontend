@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
@@ -14,20 +14,20 @@ export default function Tag() {
   const [tag, setTag] = useState("");
   const navigate = useNavigate();
 
+  const audioRef = useRef(null);
+
   const handleTagChange = (e) => {
     setTag(e.target.value);
   };
 
   const repeat = (e) => {
     e.preventDefault();
-
-    const audio = document.getElementById("audio");
+    const audio = audioRef.current;
     audio.play();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const file = new File([recording], "blob", {
       type: "audio/mpeg",
     });
@@ -54,7 +54,7 @@ export default function Tag() {
   return (
     <div className="main-background">
       <Listen />
-      <audio id="audio" controls src={urlmade}></audio>
+      <audio id="audio" controls src={urlmade} ref={audioRef}></audio>
       <form onSubmit={handleSubmit}>
         <label htmlFor="tag">Tag</label>
         <input
