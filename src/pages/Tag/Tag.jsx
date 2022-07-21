@@ -5,6 +5,7 @@ import { recordingState } from "../../states/music";
 import { tokenState, userState } from "../../states/user";
 import axios from "axios";
 import Listen from "./Listen";
+import Letters from "./Letters";
 
 export default function Tag() {
   const recording = useRecoilValue(recordingState);
@@ -44,6 +45,7 @@ export default function Tag() {
   return (
     <div className="main-background">
       <Listen />
+      <Letters />
       <form onSubmit={handleSubmit}>
         <label htmlFor="tag">Tag</label>
         <input
