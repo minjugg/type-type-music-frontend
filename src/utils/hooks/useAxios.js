@@ -10,11 +10,11 @@ export const useAxios = (axiosParams) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [trigger, setTrigger] = useState(0);
 
   useEffect(() => {
     const fetchData = async (params) => {
       try {
+        setLoading(true);
         const response = await axios.request(params);
         setData(response.data);
       } catch (error) {
@@ -25,17 +25,9 @@ export const useAxios = (axiosParams) => {
     };
 
     if (token) {
-      setLoading(true);
       fetchData(axiosParams);
     }
-  }, [axiosParams, trigger]);
+  }, [axiosParams.headers.Authorization]);
 
-  const refetch = () => {
-    if (token) {
-      setLoading(true);
-      setTrigger(Date.now());
-    }
-  };
-
-  return { data, loading, error, refetch };
+  return { data, loading, error };
 };

@@ -19,7 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/users/:username" element={<StandBy />} />
         <Route path="/users/:username/code" element={<Studio />} />
-        <Route path="/users/:username/code/play/tag" element={<Tag />} />
+        <Route path="/users/:username/code/tag" element={<Tag />} />
         <Route path="/users/:username/my-page" element={<MyPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/*" element={<Navigate to="/" replace />} />

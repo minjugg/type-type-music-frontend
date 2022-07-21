@@ -2,15 +2,30 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { tokenState, userState } from "../../states/user";
 import { useAxios } from "../../utils/hooks/useAxios";
 import styled from "styled-components";
 
 export default function Login() {
   const [token, setToken] = useRecoilState(tokenState);
-  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const setCurrentUser = useSetRecoilState(userState);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (userCredential) => {
+      if (userCredential) {
+        const idToken = await userCredential.getIdToken();
+        const username = userCredential.email.split("@")[0];
+
+        setToken(idToken);
+        setCurrentUser(username);
+        navigate(`/users/${username}`);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useAxios({
     method: "get",
@@ -21,26 +36,6 @@ export default function Login() {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (userCredential) => {
-      if (userCredential) {
-        const idToken = await userCredential.getIdToken();
-        const username = userCredential.email.split("@")[0];
-
-        setToken(idToken);
-        setCurrentUser(username);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (currentUser) {
-      navigate(`/users/${currentUser}`);
-    }
-  }, [currentUser]);
 
   const handleGoogleLogin = async (e) => {
     e.preventDefault();

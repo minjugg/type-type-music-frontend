@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
@@ -8,13 +8,13 @@ import styled from "styled-components";
 export default function MyPage() {
   const token = useRecoilValue(tokenState);
   const currentUser = useRecoilValue(userState);
-  const [musics, setMusic] = useState(null);
+  const [audios, setAudios] = useState(null);
   const [click, setClick] = useState(true);
 
   const apiEndpoint = `${process.env.REACT_APP_SERVER_URL}/users/${currentUser}`;
 
   const fetchMusicData = async () => {
-    const music = await axios.get(apiEndpoint + "/records", {
+    const { data } = await axios.get(apiEndpoint + "/records", {
       headers: {
         "Content-Type": "application/json",
         charset: "utf-8",
@@ -22,7 +22,7 @@ export default function MyPage() {
       },
     });
 
-    setMusic(music.data);
+    setAudios(data);
   };
 
   const toggleLikes = async (audio) => {
@@ -57,6 +57,16 @@ export default function MyPage() {
     fetchMusicData(token);
   }, [click]);
 
+  const audioRefs = useRef([]);
+
+  function toggleAudio(i) {
+    if (audioRefs.current[i].paused) {
+      audioRefs.current[i].play();
+    } else {
+      audioRefs.current[i].pause();
+    }
+  }
+
   return (
     <div>
       <NavBar>
@@ -69,17 +79,34 @@ export default function MyPage() {
         </div>
       </NavBar>
       <MusicContainer>
-        <LeftContainer>Sort</LeftContainer>
         <RightContainer>
           <div className="right-main">
-            {Array.isArray(musics) && musics.length > 0 ? (
-              musics?.map((audio) => {
+            {Array.isArray(audios) && audios.length > 0 ? (
+              audios?.map((audio, i) => {
                 return (
                   <Audio key={audio.storageUrl}>
-                    <audio controls>
-                      <source src={audio.storageUrl} type="audio/mpeg"></source>
-                    </audio>
+                    <div className="audio-player">
+                      <div className="icon-container">
+                        💾
+                        <audio
+                          src={audio.storageUrl}
+                          type="audio/mpeg"
+                          ref={(element) => {
+                            audioRefs.current[i] = element;
+                          }}
+                        ></audio>
+                        <div className="controls">
+                          <button
+                            className="player-button"
+                            onClick={() => toggleAudio(i)}
+                          >
+                            PLAY
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                     <div className="options">
+                      <div className="tag">{audio?.tag}</div>
                       <div className="likes" onClick={() => toggleLikes(audio)}>
                         {audio.isLiked ? <>♥</> : <>♡</>}
                       </div>
@@ -135,13 +162,6 @@ const MusicContainer = styled.div`
   overflow: scroll;
 `;
 
-const LeftContainer = styled.div`
-  background-color: gray;
-  height: 100%;
-  width: 15vw;
-  text-align: center;
-`;
-
 const RightContainer = styled.div`
   width: 100%;
   margin: 30px;
@@ -155,6 +175,7 @@ const Audio = styled.div`
 
   .options {
     display: float;
+    margin: 50px;
   }
 
   .options:hover {

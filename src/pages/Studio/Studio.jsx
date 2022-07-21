@@ -18,7 +18,7 @@ export default function Studio() {
       await Tone.start();
     }
 
-    navigate(`/users/${currentUser}/code/play/tag`);
+    navigate(`/users/${currentUser}/code/tag`);
   };
 
   return (

@@ -1,40 +1,30 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useRecoilValue } from "recoil";
-import { musicUrlState, recordingState } from "../../states/music";
+import { recordingState } from "../../states/music";
 import { tokenState, userState } from "../../states/user";
-import Listen from "../../components/Listen/Listen";
+import axios from "axios";
+import Listen from "./Listen";
 
 export default function Tag() {
-  const urlmade = useRecoilValue(musicUrlState);
   const recording = useRecoilValue(recordingState);
   const currentUser = useRecoilValue(userState);
   const token = useRecoilValue(tokenState);
-  const [tag, setTag] = useState("");
   const navigate = useNavigate();
 
-  const audioRef = useRef(null);
-
-  const handleTagChange = (e) => {
-    setTag(e.target.value);
-  };
-
-  const repeat = (e) => {
-    e.preventDefault();
-    const audio = audioRef.current;
-    audio.play();
-  };
+  const inputRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const file = new File([recording], "blob", {
       type: "audio/mpeg",
     });
 
     const formData = new FormData();
+
     formData.append("audio", file);
-    formData.append("tag", e.target.tag.value);
+    formData.append("tag", inputRef.current.value);
 
     await axios.post(
       `${process.env.REACT_APP_SERVER_URL}/users/${currentUser}/records`,
@@ -54,22 +44,17 @@ export default function Tag() {
   return (
     <div className="main-background">
       <Listen />
-      <audio id="audio" controls src={urlmade} ref={audioRef}></audio>
       <form onSubmit={handleSubmit}>
         <label htmlFor="tag">Tag</label>
         <input
+          ref={inputRef}
           type="text"
           id="tag"
           name="tag"
-          value={tag}
-          onChange={handleTagChange}
-          placeholder="Rainy"
+          placeholder="# Rainy"
         />
         <button type="submit">Save</button>
       </form>
-      <button type="button" onClick={repeat}>
-        Repeat
-      </button>
     </div>
   );
 }
