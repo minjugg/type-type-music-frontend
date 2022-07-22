@@ -6,7 +6,6 @@ import * as Tone from "tone";
 import { calculateNoteLength } from "../calculateNoteLength";
 import { codeIndexState } from "../../states/music";
 import { initializeMusicSetting } from "../initializeMusicSetting";
-import { chord } from "../../constants/codeLetter";
 
 export const usePlayMusic = (notes) => {
   const setRecording = useSetRecoilState(recordingState);
@@ -71,12 +70,6 @@ export const usePlayMusic = (notes) => {
           setLoading(false);
         } else {
           if (indexOfFirstLetters.includes(noteIndex)) {
-            // const mainChord = chord[note[0]];
-            // console.log(2, note[0]);
-
-            // console.log("main", mainChord);
-
-            // synth.triggerAttackRelease(mainChord, "8n", time);
             setLettersIndex((index) => index + 1);
           }
           synth.triggerAttackRelease(note, 0.3, time);
