@@ -3,7 +3,8 @@ import { note } from "../constants/codeLetter";
 
 export const musicState = atom({
   key: "musicState",
-  default: "sample code",
+  default: `const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<h1>Hello, world!</h1>);`,
 });
 
 export const musicUrlState = atom({
@@ -21,6 +22,61 @@ export const recordingState = atom({
   default: null,
 });
 
+export const codeIndexState = atom({
+  key: "codeIndexState",
+  default: 0,
+});
+
+export const codeLetterState = selector({
+  key: "codeLetterState",
+  get: ({ get }) => {
+    const code = get(musicState);
+    const lettersOfCode = code
+      .split(" ")
+      .join(",")
+      .split("\n")
+      .join(",")
+      .split("(")
+      .join(",")
+      .split(")")
+      .join(",")
+      .split("[")
+      .join(",")
+      .split("]")
+      .join(",")
+      .split("{")
+      .join(",")
+      .split("}")
+      .join(",")
+      .split(".")
+      .join(",")
+      .split("/")
+      .join(",")
+      .split("'")
+      .join(",")
+      .split(",")
+      .filter((word) => {
+        if (
+          word === " " ||
+          word.includes("\n") ||
+          note[word[0]] === undefined
+        ) {
+          return false;
+        }
+
+        return true;
+      });
+
+    const sheet = {};
+
+    lettersOfCode.map((letter, i) => {
+      return (sheet[i] = letter);
+    });
+
+    return sheet;
+  },
+});
+
 export const codeState = selector({
   key: "codeState",
   get: ({ get }) => {
@@ -34,11 +90,19 @@ export const codeState = selector({
       .join(",")
       .split(")")
       .join(",")
+      .split("[")
+      .join(",")
+      .split("]")
+      .join(",")
       .split("{")
       .join(",")
       .split("}")
       .join(",")
       .split(".")
+      .join(",")
+      .split("/")
+      .join(",")
+      .split("'")
       .join(",")
       .split(",")
       .filter((word) => {
@@ -58,4 +122,9 @@ export const codeState = selector({
 
     return firstLettersOfCode;
   },
+});
+
+export const triggerState = atom({
+  key: "triggerState",
+  default: 0,
 });

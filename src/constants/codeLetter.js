@@ -15,7 +15,7 @@ export const note = {
   f: ["C", "E", "G", "B"],
   g: ["Db", "F", "Ab", "C"],
   h: ["D", "F#", "A", "C#"],
-  j: ["Eb2", "G2", "Bb", "D2"],
+  j: ["Eb", "G", "Bb", "D"],
   k: ["Eb", "G", "Bb", "D"],
   l: ["E", "G#", "B", "D#"],
   z: ["F", "A", "C", "E"],
