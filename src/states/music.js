@@ -3,8 +3,16 @@ import { note } from "../constants/codeLetter";
 
 export const musicState = atom({
   key: "musicState",
-  default: `const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<h1>Hello, world!</h1>);`,
+  default: `import React from "react";
+
+  function invertCodeIntoMusic(word) {
+    switch(word[0]) {
+      case "a":
+        console.log("chordA");
+      default:
+        break;
+    }
+  }`,
 });
 
 export const musicUrlState = atom({
