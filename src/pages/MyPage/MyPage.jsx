@@ -1,15 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { tokenState, userState } from "../../states/user";
+import { codeIndexState, musicState } from "../../states/music";
 import styled from "styled-components";
+import axios from "axios";
 
 export default function MyPage() {
   const token = useRecoilValue(tokenState);
   const currentUser = useRecoilValue(userState);
   const [audios, setAudios] = useState(null);
   const [click, setClick] = useState(true);
+  const navigate = useNavigate();
+
+  const resetMusic = useResetRecoilState(musicState);
+  const resetIndex = useResetRecoilState(codeIndexState);
 
   const apiEndpoint = `${process.env.REACT_APP_SERVER_URL}/users/${currentUser}`;
 
@@ -67,132 +72,248 @@ export default function MyPage() {
     }
   }
 
+  const handleNavbarButton = () => {
+    resetMusic();
+    resetIndex();
+    navigate(`/users/${currentUser}/code`);
+  };
+
   return (
     <div>
       <NavBar>
-        <div className="logo">
-          <Link to="/">LOGO</Link>
-        </div>
-        <div className="nav-bar-context">
-          <Link to={`/users/${currentUser}/code`}>Play more code</Link>
-          <Link to="/about">FAQ</Link>
+        <div className="navbar-context">
+          <img
+            className="left-code"
+            src="/images/button/code_neon.png"
+            alt="play more code"
+            onClick={handleNavbarButton}
+          />
+          <div className="title">
+            {currentUser}
+            <span className="default">Music Library</span>
+          </div>
+          {Array.isArray(audios) && audios.length > 0 && (
+            <span className="description"> ✱ Click on the tape to listen</span>
+          )}
+          <img
+            className="right-code"
+            src="/images/button/code_neon.png"
+            alt="play more code"
+            onClick={handleNavbarButton}
+          />
+          {/* <div className="FAQ" onClick={() => navigate("/about")}>
+            FAQ
+          </div> */}
         </div>
       </NavBar>
-      <MusicContainer>
-        <RightContainer>
-          <div className="right-main">
-            {Array.isArray(audios) && audios.length > 0 ? (
-              audios?.map((audio, i) => {
-                return (
-                  <Audio key={audio.storageUrl}>
-                    <div className="audio-player">
-                      <div className="icon-container">
-                        💾
-                        <audio
-                          src={audio.storageUrl}
-                          type="audio/mpeg"
-                          ref={(element) => {
-                            audioRefs.current[i] = element;
-                          }}
-                        ></audio>
-                        <div className="controls">
-                          <button
-                            className="player-button"
-                            onClick={() => toggleAudio(i)}
-                          >
-                            PLAY
-                          </button>
-                        </div>
-                      </div>
+      <AudioContainer>
+        <AudioSlot>
+          {Array.isArray(audios) && audios.length > 0 ? (
+            audios?.map((audio, i) => {
+              return (
+                <Audio key={audio.storageUrl}>
+                  <AudioTag onClick={() => toggleAudio(i)}>
+                    <span>#</span>
+                    <span>{audio?.tag}</span>
+                  </AudioTag>
+                  <Options>
+                    <div className="likes" onClick={() => toggleLikes(audio)}>
+                      {audio.isLiked ? <>♥</> : <>♡</>}
                     </div>
-                    <div className="options">
-                      <div className="tag">{audio?.tag}</div>
-                      <div className="likes" onClick={() => toggleLikes(audio)}>
-                        {audio.isLiked ? <>♥</> : <>♡</>}
-                      </div>
-                      <div
-                        className="delete"
-                        onClick={() => deleteAudio(audio)}
-                      >
-                        DEL
-                      </div>
+                    <div className="delete" onClick={() => deleteAudio(audio)}>
+                      ✗
                     </div>
-                  </Audio>
-                );
-              })
-            ) : (
-              <div>No music made yet.</div>
-            )}
-          </div>
-        </RightContainer>
-      </MusicContainer>
+                  </Options>
+                  <audio
+                    src={audio.storageUrl}
+                    type="audio/mpeg"
+                    ref={(element) => {
+                      audioRefs.current[i] = element;
+                    }}
+                  ></audio>
+                </Audio>
+              );
+            })
+          ) : (
+            <EmptyMessage>No music has been made yet.</EmptyMessage>
+          )}
+        </AudioSlot>
+      </AudioContainer>
     </div>
   );
 }
 
 const NavBar = styled.nav`
-  position: relative;
-  overflow: hidden;
-  background-color: black;
-  color: white;
-
-  a {
-    float: left;
-    text-align: center;
-    padding: 17px 50px;
-    font-size: 30px;
-    color: #fff;
-  }
-
-  a:hover {
-    color: #6893cc;
-  }
-
-  .nav-bar-context {
-    float: right;
-  }
-`;
-
-const MusicContainer = styled.div`
+  position: absolute;
+  width: 100vw;
   display: flex;
-  flex-direction: row;
-  background-color: rgb(70, 75, 90);
-  color: #fff;
-  height: 100vh;
-  overflow: scroll;
+  align-items: center;
+  top: 8%;
+  font-family: Helvetica, sans-serif;
+
+  .navbar-context {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    right: 5px;
+    transform: scale(0.7);
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    font-size: 100px;
+    position: relative;
+
+    .default {
+      color: #9261f9;
+    }
+  }
+
+  .description {
+    font-size: 2rem;
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translate(-50%);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .left-code {
+    position: relative;
+    right: 10%;
+    width: 100px;
+    height: 80px;
+    transition: transform 0.5s;
+  }
+
+  .left-code:hover {
+    transform: scale(1.2);
+  }
+
+  .right-code {
+    position: relative;
+    left: 10%;
+    width: 100px;
+    height: 80px;
+    transition: transform 0.5s;
+  }
+
+  .right-code:hover {
+    transform: scale(1.2);
+  }
 `;
 
-const RightContainer = styled.div`
+const AudioContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  align-items: center;
+  width: 70%;
+  height: 60%;
+  border: 3px solid #9261f9;
+  border-radius: 10px;
+`;
+
+const AudioSlot = styled.div`
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
   width: 100%;
-  margin: 30px;
+  height: 90%;
+  border: 3px solid #9261f9;
+  border-radius: 5px;
+  overflow: scroll;
 `;
 
 const Audio = styled.div`
   display: flex;
+  position: relative;
+  flex-direction: column;
   align-items: center;
-  height: 100px;
-  margin: 30px;
+  height: 40vh;
+  width: 5%;
+  left: 0;
+  margin: auto 3px;
+  padding: 50px 10px;
+  background-color: #9261f9;
+  border-radius: 4px;
+  border: 10px solid rgba(198, 198, 198, 0.9);
+  transition: transform 0.3s;
+  opacity: 0.7;
 
-  .options {
-    display: float;
-    margin: 50px;
+  &:hover {
+    opacity: 1;
   }
+`;
 
-  .options:hover {
-    cursor: pointer;
+const AudioTag = styled.div`
+  position: relative;
+  text-align: left;
+  margin-right: 10px;
+  top: 66px;
+  right: 4px;
+  font-size: 1.5em;
+  font-weight: bold;
+  cursor: pointer;
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+  width: 230px;
+  height: 45px;
+  overflow: hidden;
+
+  span {
+    margin-right: 10px;
   }
+`;
+
+const Options = styled.div`
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transform: scale(2);
+  text-align: center;
+
+  position: relative;
+  top: 200px;
+  color: #202025;
 
   .likes {
-    margin-left: 100px;
-    margin-right: 100px;
-    transform: scale(2);
+    padding: 3px;
+    border-radius: 2px;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: #ccfd02;
   }
 
   .likes:hover {
-    color: gray;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .delete {
+    padding: 5px;
+    border-radius: 2px;
+    color: #ccfd02;
   }
 
   .delete:hover {
-    color: gray;
+    background-color: rgba(255, 255, 255, 0.3);
   }
+`;
+
+const EmptyMessage = styled.div`
+  position: absolute;
+  font-size: 1.5rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: Helvetica, sans-serif;
 `;

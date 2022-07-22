@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { userState, tokenState } from "../../states/user";
-import { auth } from "../../config/firebase";
+import { userState, tokenState } from "../states/user";
+import { auth } from "../config/firebase";
 import styled from "styled-components";
 
-export default function Logout() {
+export default function LogoutButton() {
   const setCurrentUser = useSetRecoilState(userState);
   const setToken = useSetRecoilState(tokenState);
   const navigate = useNavigate();
@@ -26,16 +26,23 @@ export default function Logout() {
   };
 
   return (
-    <LogoutButton>
-      <button className="logout-button" onClick={handleGoogleLogout}>
-        Logout
-      </button>
-    </LogoutButton>
+    <GoogleButton onClick={handleGoogleLogout}>
+      <img src="/images/button/google-logout.png" alt="logout" />
+    </GoogleButton>
   );
 }
 
-const LogoutButton = styled.div`
+const GoogleButton = styled.div`
   position: fixed;
   right: 0;
   top: 0;
+  font-size: 30px;
+  padding: 5px;
+  margin: 50px;
+  transition: transform 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+  }
 `;

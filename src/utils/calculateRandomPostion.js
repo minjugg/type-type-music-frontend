@@ -1,7 +1,7 @@
 export const randomPosition = (dimension) => {
-  if (dimension === window.innerHeight) {
-    return Math.round(Math.random() * window.innerHeight);
+  if (dimension === "heightStandard") {
+    return Math.round(Math.random() * window.innerHeight * 0.9);
   } else {
-    return Math.round(Math.random() * window.innerWidth);
+    return Math.round(Math.random() * window.innerWidth * 0.8);
   }
 };

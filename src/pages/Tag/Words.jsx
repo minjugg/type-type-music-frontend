@@ -4,14 +4,14 @@ import { codeIndexState, codeLetterState } from "../../states/music";
 import { randomPosition } from "../../utils/calculateRandomPostion";
 import styled from "styled-components";
 
-export default function Letters() {
+export default function Words() {
   const index = useRecoilValue(codeIndexState);
   const codeLetter = useRecoilValue(codeLetterState);
 
   return (
     <Display
-      top={randomPosition(window.innerHeight) + "px"}
-      left={randomPosition(window.innerWidth) + "px"}
+      top={randomPosition("heightStandard") + "px"}
+      left={randomPosition("widthStandard") + "px"}
     >
       {codeLetter[index.toString()]}
     </Display>
@@ -23,7 +23,7 @@ const Display = styled.div`
   top: ${(props) => props.top};
   left: ${(props) => props.left};
   color: #f8f8ff;
-  font-size: 30px;
+  font-size: 70px;
   font-weight: bold;
-  text-shadow: 0.08em 0em #b0c4de;
+  text-shadow: 5px 5px 5px #ccfd02;
 `;

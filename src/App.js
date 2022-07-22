@@ -3,10 +3,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import GlobalStyles from "../src/pages/styles/GlobalStyles";
 import { Reset } from "styled-reset";
 
-import Home from "./pages/Home/Home";
-import StandBy from "./pages/StandBy/StandBy";
-import Studio from "./pages/Studio/Studio";
-import Tag from "./pages/Tag/Tag";
+import Home from "./pages/Home/HomePage";
+import StandBy from "./pages/StandBy/StandByPage";
+import Studio from "./pages/Studio/StudioPage";
+import Tag from "./pages/Tag/TagPage";
 import MyPage from "./pages/MyPage/MyPage";
 import About from "./pages/About/About";
 

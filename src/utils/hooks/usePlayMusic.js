@@ -1,21 +1,17 @@
 import { useState, useEffect } from "react";
-import { useSetRecoilState, useRecoilValue } from "recoil";
-import {
-  triggerState,
-  musicUrlState,
-  recordingState,
-} from "../../states/music";
+import { useSetRecoilState } from "recoil";
+import { musicUrlState, recordingState } from "../../states/music";
 
 import * as Tone from "tone";
 import { calculateNoteLength } from "../calculateNoteLength";
 import { codeIndexState } from "../../states/music";
 import { initializeMusicSetting } from "../initializeMusicSetting";
+import { chord } from "../../constants/codeLetter";
 
 export const usePlayMusic = (notes) => {
-  const setUrl = useSetRecoilState(musicUrlState);
   const setRecording = useSetRecoilState(recordingState);
   const setLettersIndex = useSetRecoilState(codeIndexState);
-  const trigger = useRecoilValue(triggerState);
+  const setUrl = useSetRecoilState(musicUrlState);
 
   const [loading, setLoading] = useState(true);
 
@@ -29,9 +25,10 @@ export const usePlayMusic = (notes) => {
 
     recorder.start();
 
-    const { drumbeat, bpm } = initializeMusicSetting(notes.length);
+    const { drumbeat } = initializeMusicSetting(notes.length);
 
-    Tone.Transport.bpm.value = bpm;
+    Tone.Transport.volume = -30;
+    Tone.Transport.bpm.value = 80;
     Tone.Transport.start();
 
     let noteIndex = 0;
@@ -40,7 +37,7 @@ export const usePlayMusic = (notes) => {
       url: drumbeat,
       autostart: true,
       loop: true,
-      volume: -15,
+      volume: -30,
     }).toDestination();
 
     const noteLength = calculateNoteLength(notes);
@@ -60,22 +57,29 @@ export const usePlayMusic = (notes) => {
         if (noteIndex >= noteLength) {
           const endRecording = setInterval(async () => {
             const recording = await recorder.stop();
-            const url = URL.createObjectURL(recording);
-            setUrl(url);
             setRecording(recording);
 
-            player.stop();
+            const url = URL.createObjectURL(recording);
+            setUrl(url);
+
             return clearInterval(endRecording);
           }, 1000);
 
+          player.stop();
           sequence.stop();
           Tone.Transport.stop();
           setLoading(false);
         } else {
           if (indexOfFirstLetters.includes(noteIndex)) {
+            // const mainChord = chord[note[0]];
+            // console.log(2, note[0]);
+
+            // console.log("main", mainChord);
+
+            // synth.triggerAttackRelease(mainChord, "8n", time);
             setLettersIndex((index) => index + 1);
           }
-          synth.triggerAttackRelease(note, 0.1);
+          synth.triggerAttackRelease(note, 0.3, time);
           noteIndex++;
         }
       },
@@ -84,7 +88,7 @@ export const usePlayMusic = (notes) => {
     );
 
     sequence.start();
-  }, [trigger]);
+  }, []);
 
   return { loading };
 };

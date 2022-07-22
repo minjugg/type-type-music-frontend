@@ -3,7 +3,8 @@ import { note } from "../constants/codeLetter";
 
 export const musicState = atom({
   key: "musicState",
-  default: "sample code",
+  default: `const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<h1>Hello, world!</h1>);`,
 });
 
 export const musicUrlState = atom({
@@ -39,11 +40,19 @@ export const codeLetterState = selector({
       .join(",")
       .split(")")
       .join(",")
+      .split("[")
+      .join(",")
+      .split("]")
+      .join(",")
       .split("{")
       .join(",")
       .split("}")
       .join(",")
       .split(".")
+      .join(",")
+      .split("/")
+      .join(",")
+      .split("'")
       .join(",")
       .split(",")
       .filter((word) => {

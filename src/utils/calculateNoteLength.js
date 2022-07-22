@@ -1,13 +1,15 @@
-let length = 0;
+const reduceNote = (array) => {
+  const totalNoteLength = array.reduce((previousValue, currentValue) => {
+    return previousValue + currentValue;
+  });
+
+  return totalNoteLength;
+};
 
 export const calculateNoteLength = (array) => {
-  for (let i in array) {
-    if (Array.isArray(array[i])) {
-      calculateNoteLength(array[i]);
-    } else {
-      length++;
-    }
-  }
+  const noteLengthArray = array.map((bar) => {
+    return bar.length;
+  });
 
-  return length;
+  return reduceNote(noteLengthArray);
 };

@@ -7,7 +7,7 @@ import { tokenState, userState } from "../../states/user";
 import { useAxios } from "../../utils/hooks/useAxios";
 import styled from "styled-components";
 
-export default function Login() {
+export default function LoginButton() {
   const [token, setToken] = useRecoilState(tokenState);
   const setCurrentUser = useSetRecoilState(userState);
   const navigate = useNavigate();
@@ -48,23 +48,26 @@ export default function Login() {
   };
 
   return (
-    <SocialLoginButton>
+    <GoogleButton>
       <img
+        className="login-button"
         src="/images/button/google-login.png"
         alt="google login button"
         onClick={handleGoogleLogin}
       />
-    </SocialLoginButton>
+    </GoogleButton>
   );
 }
 
-const SocialLoginButton = styled.div`
-  & {
+const GoogleButton = styled.div`
+  transition: transform 0.3s;
+  z-index: 1;
+
+  .login-button {
     cursor: pointer;
-    transition: transform 0.3s;
   }
 
   &:hover {
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
 `;
