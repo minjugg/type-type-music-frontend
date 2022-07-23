@@ -4,12 +4,12 @@ const randomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-let octave = 3;
+let octave = 4;
 
 export const randomArray = (letter) => {
-  if (octave < 3) {
+  if (octave < 4) {
     octave += 1;
-  } else if (octave > 3) {
+  } else if (octave > 4) {
     octave -= 1;
   } else {
     octave += randomNumber(-1, 1);
