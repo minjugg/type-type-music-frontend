@@ -33,9 +33,10 @@ export default function Tag() {
 
 const TagPageWrapper = styled.div`
   img.background {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     opacity: 0.2;
     z-index: -1;
   }
