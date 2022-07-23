@@ -9,28 +9,22 @@ export default function Words() {
   const codeLetter = useRecoilValue(codeLetterState);
 
   return (
-    // <Main>
     <Display
-      top={randomPosition("heightStandard") + 1000 + "px"}
-      left={randomPosition("widthStandard") + 2000 + "px"}
+      top={randomPosition("heightStandard") + "px"}
+      left={randomPosition("widthStandard") + "px"}
     >
       {codeLetter[index.toString()]}
     </Display>
-    // </Main>
   );
 }
 
-// const Main = styled.div`
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-// `;
-
 const Display = styled.div`
   position: absolute;
-  top: ${(props) => props.top};
-  left: ${(props) => props.left};
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* top: ${(props) => props.top};
+  left: ${(props) => props.left}; */
   color: #f8f8ff;
   font-size: 70px;
   font-weight: bold;
