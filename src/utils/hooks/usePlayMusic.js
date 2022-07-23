@@ -36,7 +36,7 @@ export const usePlayMusic = (notes) => {
       url: drumbeat,
       autostart: true,
       loop: true,
-      volume: -30,
+      volume: -15,
     }).toDestination();
 
     const noteLength = calculateNoteLength(notes);

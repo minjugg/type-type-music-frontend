@@ -83,7 +83,6 @@ export default function Listen() {
       <FormTag>
         <div className="title"># Name your music</div>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="tag">✱ You can save without typing anything</label>
           <input
             ref={inputRef}
             type="text"
