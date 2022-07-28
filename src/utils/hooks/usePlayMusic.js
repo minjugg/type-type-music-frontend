@@ -13,6 +13,9 @@ export const usePlayMusic = (notes) => {
   const setUrl = useSetRecoilState(musicUrlState);
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const noteLength = calculateNoteLength(notes);
 
   useEffect(() => {
     const recorder = new Tone.Recorder();
@@ -38,8 +41,6 @@ export const usePlayMusic = (notes) => {
       loop: true,
       volume: -15,
     }).toDestination();
-
-    const noteLength = calculateNoteLength(notes);
 
     let index = 0;
 
@@ -82,6 +83,10 @@ export const usePlayMusic = (notes) => {
 
     sequence.start();
   }, []);
+
+  if (noteLength === 0) {
+    setError(true);
+  }
 
   return { loading };
 };

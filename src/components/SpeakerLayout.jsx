@@ -8,7 +8,6 @@ export default function SpeakerLayout(props) {
         <img
           className="left-speaker"
           src={`/images/assets/${props.image}`}
-          // src="/images/assets/speaker_neon.png"
           alt="neon speaker"
         />
         <img

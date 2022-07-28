@@ -2,18 +2,18 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { codeState } from "../../states/music";
 
-import { randomArray } from "../../utils/octave";
+import { createRandomArray } from "../../utils/handleOctave";
 import { usePlayMusic } from "../../utils/hooks/usePlayMusic";
 
-import Listen from "./Listen";
-import Words from "./Words";
+import TagInput from "./TagInput";
+import WordsDisplay from "./WordDisplay";
 import styled from "styled-components";
 
-export default function Tag() {
-  const firstLettersOfCode = useRecoilValue(codeState);
+export default function TagPage() {
+  const firstAlphabet = useRecoilValue(codeState);
 
-  const finalRandomArray = firstLettersOfCode.map((letter) => {
-    return randomArray(letter);
+  const finalRandomArray = firstAlphabet.map((alphabet) => {
+    return createRandomArray(alphabet);
   });
 
   const { loading } = usePlayMusic(finalRandomArray);
@@ -21,8 +21,8 @@ export default function Tag() {
   return (
     <>
       <Background src="/images/assets/background-listen.jpg" alt="background" />
-      {loading && <Words />}
-      {!loading && <Listen />}
+      {loading && <WordsDisplay />}
+      {!loading && <TagInput />}
     </>
   );
 }

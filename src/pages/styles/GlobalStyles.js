@@ -23,9 +23,7 @@ const GlobalStyles = createGlobalStyle`
     width: 30rem;
     height: 8rem;
     transition: 0.3s;
-    /* border: 1px solid #9261f9; */
     background-color: #FFFFFF;
-    /* border-radius: 7px; */
     font-family: Helvetica, sans-serif;
   }
 

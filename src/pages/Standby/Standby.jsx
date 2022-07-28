@@ -6,7 +6,7 @@ import Logout from "../../components/Logout";
 import Button from "../../components/ButtonLayout";
 import styled from "styled-components";
 
-export default function StandBy() {
+export default function Standby() {
   const currentUser = useRecoilValue(userState);
   const navigate = useNavigate();
 

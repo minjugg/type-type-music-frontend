@@ -192,7 +192,7 @@ const AudioContainer = styled.div`
   height: 60%;
   align-items: center;
   border: 3px solid #9261f9;
-  border-radius: 10px;
+  border-radius: 0.4rem;
   background-color: #9161f93f;
 `;
 
@@ -216,11 +216,11 @@ const SingleAudioTape = styled.div`
   width: 10%;
   flex-direction: column;
   align-items: center;
-  margin: auto 3px;
-  padding: 50px 10px;
+  margin: auto 0.3rem;
+  padding: 3rem 1rem;
   background-color: #9261f9;
-  border-radius: 4px;
-  border: 10px solid rgba(198, 198, 198, 0.9);
+  border-radius: 0.4rem;
+  border: 0.8rem solid rgba(198, 198, 198, 0.9);
   transition: transform 0.3s;
   opacity: 0.7;
 
@@ -241,7 +241,7 @@ const Tag = styled.div`
   -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
   width: 15rem;
-  height: 45px;
+  height: 2.5rem;
   overflow: hidden;
 `;
 

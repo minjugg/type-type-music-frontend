@@ -4,7 +4,7 @@ import GlobalStyles from "../src/pages/styles/GlobalStyles";
 import { Reset } from "styled-reset";
 
 import Home from "./pages/Home/HomePage";
-import StandBy from "./pages/StandBy/StandByPage";
+import Standby from "./pages/Standby/Standby";
 import Studio from "./pages/Studio/StudioPage";
 import Tag from "./pages/Tag/TagPage";
 import MyPage from "./pages/MyPage/MyPage";
@@ -17,7 +17,7 @@ function App() {
       <Reset />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/users/:username" element={<StandBy />} />
+        <Route path="/users/:username" element={<Standby />} />
         <Route path="/users/:username/code" element={<Studio />} />
         <Route path="/users/:username/code/tag" element={<Tag />} />
         <Route path="/users/:username/my-page" element={<MyPage />} />

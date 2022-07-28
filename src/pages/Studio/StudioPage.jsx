@@ -1,27 +1,37 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { userState } from "../../states/user";
+import { errorState, musicState } from "../../states/music";
 import Logout from "../../components/Logout";
 import Button from "../../components/ButtonLayout";
-import CodeEditor from "./CodeEditor";
 import SpeakerLayout from "../../components/SpeakerLayout";
+import Error from "../../components/Error";
+import CodeEditor from "./CodeEditor";
 
 import styled from "styled-components";
 import * as Tone from "tone";
 
 export default function Studio() {
   const currentUser = useRecoilValue(userState);
+  const code = useRecoilValue(musicState);
+  const [error, setError] = useRecoilState(errorState);
+
   const navigate = useNavigate();
 
   const handlePlay = async (e) => {
-    e.preventDefault();
+    if (code.length > 0) {
+      e.preventDefault();
 
-    if (Tone.context.state !== "running") {
-      await Tone.start();
+      if (Tone.context.state !== "running") {
+        await Tone.start();
+      }
+
+      navigate(`/users/${currentUser}/code/tag`);
+      return;
     }
 
-    navigate(`/users/${currentUser}/code/tag`);
+    setError(true);
   };
 
   return (
@@ -49,6 +59,9 @@ export default function Studio() {
           />
         </div>
       </StudioWrapper>
+      {error && (
+        <Error message="You need to type in AT LEAST one letter."></Error>
+      )}
     </>
   );
 }
@@ -62,7 +75,7 @@ const StudioWrapper = styled.div`
   transform: translate(-50%, -50%);
 
   h1.title {
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
     text-align: center;
     font-family: Helvetica, sans-serif;
     font-size: 3rem;

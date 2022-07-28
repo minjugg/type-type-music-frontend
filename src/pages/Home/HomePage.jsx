@@ -7,13 +7,11 @@ export default function Home() {
   return (
     <Background>
       <SpeakerLayout image="speaker_neon.png" />
-      {/* <Speaker src="/images/assets/speaker_neon.png" alt="neon speaker" /> */}
       <Title>
         <h1 className="title">TYPE TYPE MUSIC</h1>
         <h3 className="sub-title">How does your code sound ?</h3>
         <LoginButton />
       </Title>
-      {/* <Speaker src="/images/assets/speaker_neon.png" alt="neon speaker" /> */}
     </Background>
   );
 }

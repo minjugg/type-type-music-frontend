@@ -67,7 +67,7 @@ export const codeLetterState = selector({
         if (
           word === " " ||
           word.includes("\n") ||
-          note[word[0]] === undefined
+          note[word[0]?.toLowerCase()] === undefined
         ) {
           return false;
         }
@@ -117,7 +117,7 @@ export const codeState = selector({
         if (
           word === " " ||
           word.includes("\n") ||
-          note[word[0]] === undefined
+          note[word[0]?.toLowerCase()] === undefined
         ) {
           return false;
         }
@@ -125,14 +125,14 @@ export const codeState = selector({
         return true;
       })
       .map((letter) => {
-        return letter[0];
+        return letter[0]?.toLowerCase();
       });
 
     return firstLettersOfCode;
   },
 });
 
-export const triggerState = atom({
-  key: "triggerState",
-  default: 0,
+export const errorState = atom({
+  key: "errorState",
+  default: false,
 });
