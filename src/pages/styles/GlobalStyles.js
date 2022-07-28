@@ -11,6 +11,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
     background-color: #202025;
     color: #CCFD02;
     font-family: Helvetica, sans-serif;
@@ -18,13 +19,13 @@ const GlobalStyles = createGlobalStyle`
 
   button {
     cursor: pointer;
-    font-size: 30px;
-    width: 400px;
-    height: 60px;
+    font-size: 3rem;
+    width: 30rem;
+    height: 8rem;
     transition: 0.3s;
-    border: 1px solid #9261f9;
+    /* border: 1px solid #9261f9; */
     background-color: #FFFFFF;
-    border-radius: 7px;
+    /* border-radius: 7px; */
     font-family: Helvetica, sans-serif;
   }
 

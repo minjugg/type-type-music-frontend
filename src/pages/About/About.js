@@ -1,11 +1,11 @@
 import React from "react";
-import LogoutButton from "../../components/LogoutButton";
+import Logout from "../../components/Logout";
 import styled from "styled-components";
 
 export default function About() {
   return (
     <>
-      <LogoutButton />
+      <Logout />
       <AboutWrapper>
         <div className="title">FAQ</div>
         <ul>

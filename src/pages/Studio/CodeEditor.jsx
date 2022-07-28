@@ -15,13 +15,13 @@ export default function CodeEditor() {
 
   return (
     <CodeMirror
-      value={code}
       options={{
         theme: "dracula",
         mode: "js",
       }}
-      height="400px"
-      width="700px"
+      value={code}
+      height="20rem"
+      width="40rem"
       onChange={handleCode}
     />
   );

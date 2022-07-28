@@ -3,30 +3,27 @@ import styled from "styled-components";
 
 export default function Button(props) {
   return (
-    <StyledButton>
-      {props.icon && (
-        <img src={`/images/button/${props.icon}`} alt={`${props.icon}`} />
-      )}
+    <Layout>
       <button
         type={props.type}
         name={props.name}
         style={{ ...props.style }}
         onClick={props.onClick}
       >
+        {props.icon && (
+          <img src={`/images/button/${props.icon}`} alt={`${props.icon}`} />
+        )}
         {props.text}
       </button>
-    </StyledButton>
+    </Layout>
   );
 }
 
-const StyledButton = styled.div`
-  position: relative;
-
+const Layout = styled.div`
   img {
-    position: absolute;
-    width: 40px;
-    top: 50%;
-    left: 30%;
-    transform: translate(-90%, -50%);
+    position: relative;
+    top: 5%;
+    transform: translateY(-5%);
+    margin-right: 3rem;
   }
 `;

@@ -48,26 +48,18 @@ export default function LoginButton() {
   };
 
   return (
-    <GoogleButton>
-      <img
-        className="login-button"
-        src="/images/button/google-login.png"
-        alt="google login button"
-        onClick={handleGoogleLogin}
-      />
-    </GoogleButton>
+    <GoogleButton
+      src="/images/button/google-login.png"
+      alt="google login button"
+      onClick={handleGoogleLogin}
+    />
   );
 }
 
-const GoogleButton = styled.div`
-  transition: transform 0.3s;
-  z-index: 1;
-
-  .login-button {
-    cursor: pointer;
-  }
-
-  &:hover {
-    transform: scale(1.05);
-  }
+const GoogleButton = styled.img`
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  width: 15em;
+  cursor: pointer;
 `;
