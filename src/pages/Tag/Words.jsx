@@ -22,8 +22,11 @@ export default function Words() {
 
 const Display = styled.div`
   position: absolute;
-  top: ${(props) => props.top};
-  left: ${(props) => props.left};
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* top: ${(props) => props.top};
+  left: ${(props) => props.left}; */
   color: #f8f8ff;
   font-size: 5rem;
   font-weight: 800;
