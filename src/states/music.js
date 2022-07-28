@@ -5,14 +5,14 @@ export const musicState = atom({
   key: "musicState",
   default: `import React from "react";
 
-  function invertCodeIntoMusic(word) {
-    switch(word[0]) {
-      case "a":
-        console.log("chordA");
-      default:
-        break;
-    }
-  }`,
+function makeMusic(word) {
+  switch(word[0]) {
+    case "a":
+      console.log("chordA");
+    default:
+      break;
+  }
+}`,
 });
 
 export const musicUrlState = atom({

@@ -26,20 +26,21 @@ export default function LogoutButton() {
   };
 
   return (
-    <GoogleButton onClick={handleGoogleLogout}>
-      <img src="/images/button/google-logout.png" alt="logout" />
-    </GoogleButton>
+    <GoogleButton
+      src="/images/button/google-logout.png"
+      alt="logout"
+      onClick={handleGoogleLogout}
+    />
   );
 }
 
-const GoogleButton = styled.div`
-  position: fixed;
-  right: 0;
+const GoogleButton = styled.img`
+  position: absolute;
   top: 0;
-  font-size: 30px;
-  padding: 5px;
-  margin: 50px;
+  right: 0;
+  margin: 5rem;
   transition: transform 0.3s;
+  z-index: 1;
 
   &:hover {
     cursor: pointer;

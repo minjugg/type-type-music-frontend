@@ -19,24 +19,17 @@ export default function Tag() {
   const { loading } = usePlayMusic(finalRandomArray);
 
   return (
-    <TagPageWrapper>
-      <img
-        className="background"
-        src="/images/assets/background-listen.jpg"
-        alt="background"
-      />
-      {!loading && <Listen />}
+    <>
+      <Background src="/images/assets/background-listen.jpg" alt="background" />
       {loading && <Words />}
-    </TagPageWrapper>
+      {!loading && <Listen />}
+    </>
   );
 }
 
-const TagPageWrapper = styled.div`
-  img.background {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    opacity: 0.2;
-    z-index: -1;
-  }
+const Background = styled.img`
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+  z-index: -1;
 `;

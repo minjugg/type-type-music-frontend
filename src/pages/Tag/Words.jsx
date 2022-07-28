@@ -8,12 +8,14 @@ export default function Words() {
   const index = useRecoilValue(codeIndexState);
   const codeLetter = useRecoilValue(codeLetterState);
 
+  const displayedWord = codeLetter[index.toString()];
+
   return (
     <Display
       top={randomPosition("heightStandard") + "px"}
       left={randomPosition("widthStandard") + "px"}
     >
-      {codeLetter[index.toString()]}
+      {displayedWord}
     </Display>
   );
 }
@@ -23,7 +25,7 @@ const Display = styled.div`
   top: ${(props) => props.top};
   left: ${(props) => props.left};
   color: #f8f8ff;
-  font-size: 70px;
-  font-weight: bold;
-  text-shadow: 5px 5px 5px #ccfd02;
+  font-size: 5rem;
+  font-weight: 800;
+  text-shadow: 0.5rem 0.5rem 0.5rem #ccfd02;
 `;

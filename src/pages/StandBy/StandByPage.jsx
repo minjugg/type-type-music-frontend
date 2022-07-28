@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../states/user";
-import LogoutButton from "../../components/LogoutButton";
+import Logout from "../../components/Logout";
 import Button from "../../components/ButtonLayout";
 import styled from "styled-components";
 
@@ -22,7 +22,7 @@ export default function StandBy() {
 
   return (
     <>
-      <LogoutButton />
+      <Logout />
       <StandbyButtonsWrapper>
         <Button
           icon="studio.png"

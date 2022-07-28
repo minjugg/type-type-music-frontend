@@ -80,35 +80,40 @@ export default function Listen() {
 
   return (
     <AudioWrapper>
+      <div className="title"># Name your music</div>
       <FormTag>
-        <div className="title"># Name your music</div>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="tag">✱ You can save without typing anything</label>
           <input
+            className="title-writer"
             ref={inputRef}
             type="text"
             id="tag"
             name="tag"
             placeholder="Try typing something like... Rock 'n' Roll !"
           />
-          <div className="save-button">
-            <Button icon="save.png" type="submit" text="Save"></Button>
-          </div>
+          <label for="tag">(It can be saved without any name)</label>
+          <Button
+            icon="save.png"
+            type="submit"
+            text="Save music"
+            style={{
+              position: "relative",
+              top: "1rem",
+            }}
+          ></Button>
         </form>
       </FormTag>
-      <AudioOptions>
-        <div className="audio-control-options">
-          <audio id="audio" controls src={url} />
-          <div className="repeat-button">
-            <Button
-              icon="repeat.png"
-              type="button"
-              onClick={repeat}
-              text="Code again"
-            ></Button>
-          </div>
-        </div>
-      </AudioOptions>
+      <audio id="audio" controls src={url} />
+      <Button
+        icon="repeat.png"
+        type="button"
+        onClick={repeat}
+        text="Code again"
+        style={{
+          position: "relative",
+          top: "4rem",
+        }}
+      ></Button>
       {loading && <Spinner />}
     </AudioWrapper>
   );
@@ -121,56 +126,42 @@ const AudioWrapper = styled.div`
   transform: translate(-50%, -50%);
   text-align: center;
 
-  .extra-message {
+  audio {
     position: relative;
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.5);
+    bottom: 15.5rem;
+  }
+
+  .title {
+    font-size: 5rem;
   }
 `;
 
 const FormTag = styled.div`
-  font-size: 50px;
-  text-align: center;
-  margin-bottom: 150px;
-
-  input {
+  form {
+    display: flex;
+    flex-direction: column;
     position: relative;
-    width: 650px;
-    height: 60px;
-    top: 160px;
-    font-size: 25px;
-    padding-left: 20px;
-    color: rgba(204, 253, 2);
-    border: 2px solid rgba(204, 253, 2);
-    background-color: rgba(255, 255, 255, 0.2);
-  }
+    top: 6em;
 
-  input::placeholder {
-    color: rgba(204, 253, 2, 0.3);
-  }
+    label {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 1rem;
+    }
 
-  div.save-button {
-    position: relative;
-    top: 310px;
-  }
+    input.title-writer {
+      width: 30em;
+      height: 3.5em;
+      font-size: 1.5rem;
 
-  label {
-    position: relative;
-    top: 150px;
-    right: 180px;
-    font-size: 20px;
-    color: rgba(255, 255, 255, 0.7);
-  }
-`;
+      color: rgba(204, 253, 2);
+      border: 2px solid rgba(204, 253, 2);
+      background-color: rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
 
-const AudioOptions = styled.div`
-  audio {
-    position: relative;
-    bottom: 250px;
-  }
-
-  div.repeat-button {
-    position: relative;
-    bottom: 50px;
+    input::placeholder {
+      color: rgba(204, 253, 2, 0.3);
+    }
   }
 `;
