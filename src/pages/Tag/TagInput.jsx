@@ -43,11 +43,13 @@ export default function WordsDisplay() {
 
     let input = inputRef.current.value.trim();
 
-    if (input === "") {
-      input = "No name";
-    } else if (input.length > 8) {
+    if (input.length > 8) {
       setError(true);
     } else {
+      if (input.length === 0) {
+        input = "No name";
+      }
+
       try {
         formData.append("tag", input);
         setLoading(true);

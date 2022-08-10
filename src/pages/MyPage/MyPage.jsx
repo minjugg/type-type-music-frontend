@@ -65,10 +65,12 @@ export default function MyPage() {
   const audioRefs = useRef([]);
 
   function toggleAudio(i) {
-    if (audioRefs.current[i].paused) {
-      audioRefs.current[i].play();
+    const currentAudio = audioRefs.current[i];
+
+    if (currentAudio.paused) {
+      currentAudio.play();
     } else {
-      audioRefs.current[i].pause();
+      currentAudio.pause();
     }
   }
 
@@ -80,27 +82,34 @@ export default function MyPage() {
 
   return (
     <>
-      <NavBar>
-        <NavBarContext>
+      <Header>
+        <Title>
+          <span className="user-name">{currentUser}</span>
+          <span className="sub-title">Music Library</span>
+        </Title>
+        <NavBar>
           <img
-            className="left-code"
+            className="code-editor"
             src="/images/button/code_neon.png"
             alt="play more code"
             onClick={handleNavbarButton}
           />
-          <div className="title">
-            {currentUser}
-            <br />
-            <span className="sub-title">Music Library</span>
+          <div
+            className="main-page"
+            onClick={() => navigate(`/users/${currentUser}`)}
+          >
+            ☗
           </div>
           <div className="FAQ" onClick={() => navigate("/about")}>
             FAQ
           </div>
-        </NavBarContext>
+        </NavBar>
         {Array.isArray(audios) && audios.length > 0 && (
-          <NavBarDescription>✱ Click on the tape to listen</NavBarDescription>
+          <NavBarDescription>
+            ✱ Click on the tape's name to listen
+          </NavBarDescription>
         )}
-      </NavBar>
+      </Header>
       <AudioContainer>
         <AudioTapeWrapper>
           {Array.isArray(audios) && audios.length > 0 ? (
@@ -135,7 +144,7 @@ export default function MyPage() {
   );
 }
 
-const NavBar = styled.div`
+const Header = styled.nav`
   position: absolute;
   top: 5%;
   display: flex;
@@ -144,35 +153,63 @@ const NavBar = styled.div`
   height: 10%;
 `;
 
-const NavBarContext = styled.nav`
+const NavBar = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   font-family: Helvetica, sans-serif;
-  font-size: 4rem;
+  position: absolute;
+  top: 0;
+  right: 5%;
+  left: 80%;
+  height: 100%;
+  margin-left: 1rem;
+  font-size: 2.5rem;
   text-align: center;
   align-items: center;
-  margin-bottom: 0.6rem;
+  transition: transform 0.3s;
 
-  img {
-    height: 60%;
+  img.code-editor {
+    height: 50%;
+    transition: transform 0.3s;
+    margin-right: 3rem;
+  }
+
+  img.code-editor:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+
+  div.main-page {
+    transition: transform 0.3s;
+    margin-right: 3rem;
+  }
+
+  div.main-page:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+
+  div.FAQ {
     transition: transform 0.3s;
   }
 
-  img:hover {
+  div.FAQ:hover {
     transform: scale(1.2);
+    cursor: pointer;
   }
+`;
 
-  .FAQ {
-    transition: transform 0.3s;
-  }
-
-  .FAQ:hover {
-    transform: scale(1.2);
-  }
+const Title = styled.nav`
+  display: flex;
+  justify-content: center;
+  font-family: Helvetica, sans-serif;
+  font-size: 4rem;
+  align-items: center;
+  margin-bottom: 1rem;
 
   .sub-title {
     color: #9261f9;
-    font-size: 5.5rem;
+    font-size: 5rem;
   }
 `;
 
@@ -204,7 +241,7 @@ const AudioTapeWrapper = styled.div`
   transform: translate(-50%, -50%);
   align-items: center;
   width: 100%;
-  height: 90%;
+  height: 80%;
   border: 3px solid #9261f9;
   overflow: scroll;
 `;
@@ -212,8 +249,8 @@ const AudioTapeWrapper = styled.div`
 const SingleAudioTape = styled.div`
   display: flex;
   position: relative;
-  height: 40vh;
   width: 10%;
+  height: 69%;
   flex-direction: column;
   align-items: center;
   margin: auto 0.3rem;
@@ -247,19 +284,20 @@ const Tag = styled.div`
 
 const Options = styled.div`
   position: relative;
-  top: 16rem;
+  top: 50%;
   display: flex;
   flex-direction: column;
   text-align: center;
   transform: scale(2);
   cursor: pointer;
   font-size: 1.3rem;
+  z-index: 1;
 `;
 
 const LikeButton = styled.div`
   padding: 0.3rem;
   border-radius: 0.15rem;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.3);

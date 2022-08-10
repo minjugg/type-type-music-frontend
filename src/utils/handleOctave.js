@@ -1,6 +1,6 @@
 import { note } from "../constants/codeLetter";
 
-const shuffleRange = (min, max) => {
+const randomBetween = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
@@ -12,10 +12,10 @@ export const createRandomArray = (letter) => {
   } else if (octave > 4) {
     octave -= 1;
   } else {
-    octave += shuffleRange(-1, 1);
+    octave += randomBetween(-1, 1);
   }
 
-  return new Array(shuffleRange(1, 3)).fill().map(() => {
-    return note[letter][shuffleRange(0, 2)] + octave;
+  return new Array(randomBetween(1, 3)).fill().map(() => {
+    return note[letter][randomBetween(0, 2)] + octave;
   });
 };

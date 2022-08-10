@@ -12,7 +12,7 @@ import CodeEditor from "./CodeEditor";
 import styled from "styled-components";
 import * as Tone from "tone";
 
-export default function Studio() {
+export default function StudioPage() {
   const currentUser = useRecoilValue(userState);
   const code = useRecoilValue(musicState);
   const [error, setError] = useRecoilState(errorState);
@@ -20,18 +20,19 @@ export default function Studio() {
   const navigate = useNavigate();
 
   const handlePlay = async (e) => {
-    if (code.length > 0) {
-      e.preventDefault();
+    e.preventDefault();
 
-      if (Tone.context.state !== "running") {
-        await Tone.start();
-      }
-
-      navigate(`/users/${currentUser}/code/tag`);
+    if (code.trim().length === 0) {
+      setError(true);
       return;
     }
 
-    setError(true);
+    if (Tone.context.state !== "running") {
+      await Tone.start();
+    }
+
+    navigate(`/users/${currentUser}/code/tag`);
+    return;
   };
 
   return (
@@ -58,6 +59,7 @@ export default function Studio() {
             }}
           />
         </div>
+        <span className="warning">⚠︎ Pay attention to the volume </span>
       </StudioWrapper>
       {error && (
         <Error message="You need to type in AT LEAST one letter."></Error>
@@ -86,5 +88,12 @@ const StudioWrapper = styled.div`
     display: flex;
     justify-content: space-evenly;
     margin-top: 1rem;
+  }
+
+  span.warning {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    font-size: 1.2rem;
   }
 `;

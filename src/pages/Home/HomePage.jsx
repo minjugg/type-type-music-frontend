@@ -3,15 +3,15 @@ import LoginButton from "./LoginButton";
 import styled from "styled-components";
 import SpeakerLayout from "../../components/SpeakerLayout";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <Background>
-      <SpeakerLayout image="speaker_neon.png" />
-      <Title>
+      <Content>
         <h1 className="title">TYPE TYPE MUSIC</h1>
         <h3 className="sub-title">How does your code sound ?</h3>
         <LoginButton />
-      </Title>
+      </Content>
+      <SpeakerLayout image="speaker_neon.png" />
     </Background>
   );
 }
@@ -25,12 +25,7 @@ const Background = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-const Speaker = styled.img`
-  width: 30em;
-  margin: 1rem;
-`;
-
-const Title = styled.div`
+const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

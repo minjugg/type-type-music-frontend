@@ -17,10 +17,10 @@ function App() {
       <Reset />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/users/:username" element={<Standby />} />
-        <Route path="/users/:username/code" element={<Studio />} />
-        <Route path="/users/:username/code/tag" element={<Tag />} />
-        <Route path="/users/:username/my-page" element={<MyPage />} />
+        <Route path="/users/:userId" element={<Standby />} />
+        <Route path="/users/:userId/code" element={<Studio />} />
+        <Route path="/users/:userId/code/tag" element={<Tag />} />
+        <Route path="/users/:userId/my-page" element={<MyPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
