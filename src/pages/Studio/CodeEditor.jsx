@@ -23,6 +23,7 @@ export default function CodeEditor() {
       height="20rem"
       width="40rem"
       onChange={handleCode}
+      data-testid="code-editor"
     />
   );
 }

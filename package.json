@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
     "@uiw/react-codemirror": "^3.2.1",
     "axios": "^0.27.2",
     "codemirror": "^5.65.3",
@@ -100,6 +97,11 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^7.2.2"
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.3.0",
+    "concurrently": "^7.2.2",
+    "coverage": "^0.4.1",
+    "react-recoil-hooks-testing-library": "^0.1.0"
   }
 }
